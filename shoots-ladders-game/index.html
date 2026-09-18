@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoots and Ladders Review Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Shoots and Ladders Review Game 🎲</h1>
+        
+        <!-- Game Setup Section -->
+        <div id="setup-section" class="section">
+            <h2>Game Setup</h2>
+            <div class="setup-controls">
+                <label for="team-count">Number of Teams:</label>
+                <select id="team-count">
+                    <option value="1">1 Team</option>
+                    <option value="2" selected>2 Teams</option>
+                    <option value="3">3 Teams</option>
+                    <option value="4">4 Teams</option>
+                </select>
+                <button id="start-game" class="btn btn-primary">Start Game</button>
+            </div>
+        </div>
+
+        <!-- Game Board Section -->
+        <div id="game-section" class="section hidden">
+            <div class="game-info">
+                <div class="current-turn">
+                    <h3>Current Turn: <span id="current-team-display"></span></h3>
+                </div>
+                <div class="turn-order">
+                    <h4>Turn Order:</h4>
+                    <div id="turn-order-display"></div>
+                </div>
+            </div>
+
+            <!-- Dice and Controls -->
+            <div class="dice-section">
+                <div class="dice-display">
+                    <div id="die1" class="die">?</div>
+                    <div id="die2" class="die">?</div>
+                </div>
+                <button id="roll-dice" class="btn btn-roll">🎲 Roll Dice</button>
+                <div id="dice-result" class="dice-result"></div>
+            </div>
+
+            <!-- Game Board -->
+            <div class="board-container">
+                <div id="game-board" class="game-board"></div>
+            </div>
+
+            <div class="game-controls">
+                <button id="reset-game" class="btn btn-secondary">Reset Game</button>
+            </div>
+        </div>
+
+        <!-- Winner Section -->
+        <div id="winner-section" class="section hidden">
+            <h2>🎉 Game Over! 🎉</h2>
+            <h3 id="winner-display"></h3>
+            <button id="play-again" class="btn btn-primary">Play Again</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
