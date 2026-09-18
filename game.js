@@ -93,8 +93,103 @@ function startGame() {
     winnerSection.classList.add('hidden');
     
     createBoard();
+    createSnakesAndLadders();
     updateTurnDisplay();
     renderPieces();
+}
+
+// Create visual snakes and ladders
+function createSnakesAndLadders() {
+    // Create ladders
+    Object.entries(ladders).forEach(([start, end]) => {
+        createLadder(parseInt(start), parseInt(end));
+    });
+    
+    // Create snakes
+    Object.entries(snakes).forEach(([start, end]) => {
+        createSnake(parseInt(start), parseInt(end));
+    });
+}
+
+// Create a visual ladder
+function createLadder(start, end) {
+    const startSquare = document.querySelector(`[data-position="${start}"]`);
+    const endSquare = document.querySelector(`[data-position="${end}"]`);
+    
+    if (!startSquare || !endSquare) return;
+    
+    const ladder = document.createElement('div');
+    ladder.className = 'ladder-connector';
+    
+    const startRect = startSquare.getBoundingClientRect();
+    const endRect = endSquare.getBoundingClientRect();
+    const boardRect = gameBoard.getBoundingClientRect();
+    
+    const startX = startRect.left - boardRect.left + startRect.width / 2;
+    const startY = startRect.top - boardRect.top + startRect.height / 2;
+    const endX = endRect.left - boardRect.left + endRect.width / 2;
+    const endY = endRect.top - boardRect.top + endRect.height / 2;
+    
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+    
+    ladder.style.width = `${length}px`;
+    ladder.style.left = `${startX}px`;
+    ladder.style.top = `${startY}px`;
+    ladder.style.transform = `rotate(${angle}deg)`;
+    ladder.style.transformOrigin = '0 0';
+    
+    gameBoard.appendChild(ladder);
+}
+
+// Create a visual snake
+function createSnake(start, end) {
+    const startSquare = document.querySelector(`[data-position="${start}"]`);
+    const endSquare = document.querySelector(`[data-position="${end}"]`);
+    
+    if (!startSquare || !endSquare) return;
+    
+    const snake = document.createElement('div');
+    snake.className = 'snake-connector';
+    
+    const startRect = startSquare.getBoundingClientRect();
+    const endRect = endSquare.getBoundingClientRect();
+    const boardRect = gameBoard.getBoundingClientRect();
+    
+    const startX = startRect.left - boardRect.left + startRect.width / 2;
+    const startY = startRect.top - boardRect.top + startRect.height / 2;
+    const endX = endRect.left - boardRect.left + endRect.width / 2;
+    const endY = endRect.top - boardRect.top + endRect.height / 2;
+    
+    // Create curved path for snake
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.style.position = 'absolute';
+    svg.style.left = '0';
+    svg.style.top = '0';
+    svg.style.width = '100%';
+    svg.style.height = '100%';
+    svg.style.pointerEvents = 'none';
+    svg.style.overflow = 'visible';
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    
+    // Create a curved path
+    const controlX1 = startX + (endX - startX) * 0.25;
+    const controlY1 = startY - 40;
+    const controlX2 = startX + (endX - startX) * 0.75;
+    const controlY2 = endY - 40;
+    
+    const pathData = `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`;
+    
+    path.setAttribute('d', pathData);
+    path.setAttribute('stroke', '#ff6b6b');
+    path.setAttribute('stroke-width', '8');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke-linecap', 'round');
+    path.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))';
+    
+    svg.appendChild(path);
+    gameBoard.appendChild(svg);
 }
 
 // Shuffle array for random turn order
@@ -148,16 +243,8 @@ function createBoard() {
                 square.appendChild(icon);
             } else if (snakes[squareNum]) {
                 square.classList.add('snake');
-                const icon = document.createElement('div');
-                icon.className = 'square-icon';
-                icon.textContent = '🐍';
-                square.appendChild(icon);
             } else if (ladders[squareNum]) {
                 square.classList.add('ladder');
-                const icon = document.createElement('div');
-                icon.className = 'square-icon';
-                icon.textContent = '🪜';
-                square.appendChild(icon);
             }
             
             // Add container for pieces

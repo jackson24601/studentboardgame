@@ -182,21 +182,35 @@ h1 {
     display: flex;
     justify-content: center;
     margin: 30px 0;
+    position: relative;
 }
 
 .game-board {
     display: grid;
     grid-template-columns: repeat(10, 60px);
     grid-template-rows: repeat(10, 60px);
-    gap: 2px;
-    background: #333;
-    padding: 2px;
+    gap: 1px;
+    background: #8B4513;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border: 5px solid #654321;
+    position: relative;
+    background-image: 
+        linear-gradient(to bottom, transparent 9%, #654321 9%, #654321 10%, transparent 10%),
+        linear-gradient(to bottom, transparent 19%, #654321 19%, #654321 20%, transparent 20%),
+        linear-gradient(to bottom, transparent 29%, #654321 29%, #654321 30%, transparent 30%),
+        linear-gradient(to bottom, transparent 39%, #654321 39%, #654321 40%, transparent 40%),
+        linear-gradient(to bottom, transparent 49%, #654321 49%, #654321 50%, transparent 50%),
+        linear-gradient(to bottom, transparent 59%, #654321 59%, #654321 60%, transparent 60%),
+        linear-gradient(to bottom, transparent 69%, #654321 69%, #654321 70%, transparent 70%),
+        linear-gradient(to bottom, transparent 79%, #654321 79%, #654321 80%, transparent 80%),
+        linear-gradient(to bottom, transparent 89%, #654321 89%, #654321 90%, transparent 90%);
+    background-color: #8B4513;
 }
 
 .square {
-    background: #f0f0f0;
+    background: #f5f5dc;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -205,26 +219,31 @@ h1 {
     font-weight: bold;
     color: #333;
     font-size: 0.8em;
+    border: 1px solid #d4d4b8;
+}
+
+.square:nth-child(even) {
+    background: #ffffed;
 }
 
 .square.start {
-    background: #90EE90;
+    background: linear-gradient(135deg, #90EE90, #7ddb7d);
     font-weight: bold;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
 .square.finish {
-    background: #FFD700;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
     font-weight: bold;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
 
 .square.snake {
-    background: #ff6b6b;
-    color: white;
+    background: #fff5f5;
 }
 
 .square.ladder {
-    background: #51cf66;
-    color: white;
+    background: #f5fff5;
 }
 
 .square-number {
@@ -249,11 +268,36 @@ h1 {
 }
 
 .piece {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 2px solid white;
+    width: 16px;
+    height: 20px;
+    position: relative;
+    border: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.piece::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 0;
+    left: 4px;
+    background: inherit;
+    border: 2px solid white;
+}
+
+.piece::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 10px;
+    border-radius: 40% 40% 50% 50%;
+    bottom: 0;
+    left: 2px;
+    background: inherit;
+    border: 2px solid white;
+    border-top: none;
 }
 
 /* Team Colors */
@@ -324,6 +368,53 @@ h1 {
 
 .die.rolling {
     animation: shake 0.1s ease-in-out infinite;
+}
+
+/* Ladder Connectors */
+.ladder-connector {
+    position: absolute;
+    height: 20px;
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        transparent 35%,
+        #8B4513 35%,
+        #8B4513 40%,
+        transparent 40%,
+        transparent 60%,
+        #8B4513 60%,
+        #8B4513 65%,
+        transparent 65%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ladder-connector::before,
+.ladder-connector::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 100%;
+    background: #A0522D;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.ladder-connector::before {
+    left: 0;
+}
+
+.ladder-connector::after {
+    right: 0;
+}
+
+/* Snake Connectors */
+.snake-connector {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
 }
 
 /* Responsive Design */
